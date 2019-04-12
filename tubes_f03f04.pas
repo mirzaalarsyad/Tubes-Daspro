@@ -8,14 +8,15 @@ interface
 				ktg	 : string;  // Kategoti buku
 				thn  : integer; // Tahun terbit
 				end;
+		tabBook = array [1..10000] of buku;
 	
-	procedure searchCat (var koleksi : array of buku; var Neff : integer);
+	procedure searchCat (var koleksi : tabBook; var Neff : integer);
 	// Prosedur pencarian berdasarkan kategori buku
-	procedure searchYr (var koleksi : array of buku; var Neff : integer);
+	procedure searchYr (var koleksi : tabBook; var Neff : integer);
 	// Prosedur pencarian berdasarkan tahun penerbitan buku
 
 implementation
-	procedure searchCat (var koleksi : array of buku; var Neff : integer);
+	procedure searchCat (var koleksi : tabBook; var Neff : integer);
 	var
 		i   : integer;
 		ada : boolean; //ada atau tidaknya kategori yang tersedia
@@ -23,12 +24,14 @@ implementation
 	begin
 		repeat
 			ada := false;
+			writeln();
 			write('Masukkan kategori: ');
 			readln(katg);
 			if (katg = 'sastra') or (katg = 'sains') or (katg = 'manga') or (katg = 'sejarah') or (katg = 'programming') then
 			begin
 				for i := 1 to Neff do
 				begin
+					writeln();
 					if(koleksi[i].ktg = katg) then
 					begin
 						writeln(koleksi[i].id, ' | ', koleksi[i].judul, ' | ', koleksi[i].auth);
@@ -37,6 +40,7 @@ implementation
 				end;
 				if not (ada) then
 				begin
+					writeln();
 					writeln('Hasil pencarian:');
 					writeln('Tidak ada buku dalam kategori ini.');
 				end;
@@ -47,7 +51,7 @@ implementation
 		until (katg = 'sastra') or (katg = 'sains') or (katg = 'manga') or (katg = 'sejarah') or (katg = 'programming');
 	end;
 
-	procedure searchYr (var koleksi : array of buku; var Neff : integer);
+	procedure searchYr (var koleksi : tabBook; var Neff : integer);
 	var
 		i   : integer;
 		ada : boolean;

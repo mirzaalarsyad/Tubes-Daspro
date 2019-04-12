@@ -8,14 +8,16 @@ interface
 			pw	  : string; // password
 			role  : string; // role, admin atau pengunjung
 			end;
+	tabUsr = array [1..10000] of pengguna;
 
-	procedure Login(var dataUsr : array of pengguna; var Neff : integer; var isAdmin: boolean);
+	
+	procedure Login(var dataUsr : tabUsr; var Neff : integer; var isAdmin: boolean);
 	//prosedur menjalankan login dan kemudian memeriksa role pengguna
-	procedure Register(var dataUsr : array of pengguna; var Neff : integer);
+	procedure Register(var dataUsr : tabUsr; var Neff : integer);
 	//prosedur menjalankan registrasi yang akan dijalankan jika isAdmin pada prosedur login bernilai true
 
 implementation
-	procedure Login(var dataUsr : array of pengguna; var Neff : integer; var isAdmin: boolean);
+	procedure Login(var dataUsr : tabUsr; var Neff : integer; var isAdmin: boolean);
 	var
 		cek : boolean; //untuk validasi masukan username
 		user: pengguna;
@@ -34,7 +36,7 @@ implementation
 			i := 1;
 			ada := false;
 
-			while not (ada) and (i = Neff) do // validasi input
+			while not (ada) and (i <= Neff) do // validasi input
 			begin
 				if(user.usrNm = dataUsr[i].usrNm) and (user.pw = dataUsr[i].pw) then
 				begin
@@ -62,7 +64,7 @@ implementation
 		end;
 	end;
 
-	procedure Register(var dataUsr : array of pengguna; var Neff : integer);
+	procedure Register(var dataUsr : tabUsr; var Neff : integer);
 	var
 		user: pengguna;
 	begin

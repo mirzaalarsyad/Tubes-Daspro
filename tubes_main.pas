@@ -17,18 +17,21 @@ type
 			ktg	 : string;  // Kategoti buku
 			thn  : integer; // Tahun terbit
 			end;
+	//tabUsr = array [1..10000] of pengguna;
+	//tabBook = array [1..10000] of buku;
 
 var
-	user 	: pengguna;
-	dataUsr : array [1..1000] of pengguna;
+	dataUsr : tubes_f01f02.tabUsr;
+	koleksi	: tubes_f03f04.tabBook;
 	Neff_1 	: integer; //Jumlah pengguna yang tersimpan dalam array data (nilai efektif)
-	input   : integer;
-	buku 	: idBuku;
-	koleksi	: array [1..10000] of buku;
 	Neff_2	: integer; //jumlah buku tersedia
+	input   : integer;
+	isAdmin : boolean;
 
 begin
-	Neff := 0;
+
+	Neff_1 := 0;
+	Neff_2 := 0;
 	isAdmin := false;
 	Login(dataUsr, Neff_1, isAdmin);
 	if (isAdmin) then
@@ -50,4 +53,5 @@ begin
 		begin
 			searchYr(koleksi, Neff_2);
 		end;
+	end;
 end .
