@@ -7,6 +7,7 @@ interface
 				auth : string;  // penulis (author) buku
 				ktg	 : string;  // Kategoti buku
 				thn  : integer; // Tahun terbit
+				jml  : integer; // Jumlah buku
 				end;
 		tabBook = array [1..10000] of buku;
 	

@@ -1,8 +1,9 @@
 program tubes_main;
 
-uses tubes_f01f02, tubes_f03f04;
+uses tubes_f01f02, tubes_f03f04, tubes_f09f10,
+	 blowfish;
 
-type
+{type
 	pengguna = record
 			nama  : string; // nama user
 			addr  : string; // alamat user
@@ -16,9 +17,10 @@ type
 			auth : string;  // penulis (author) buku
 			ktg	 : string;  // Kategoti buku
 			thn  : integer; // Tahun terbit
+			jml  : integer; // Jumlah buku
 			end;
-	//tabUsr = array [1..10000] of pengguna;
-	//tabBook = array [1..10000] of buku;
+	tabUsr = array [1..10000] of pengguna;
+	tabBook = array [1..10000] of buku; }
 
 var
 	dataUsr : tubes_f01f02.tabUsr;
@@ -40,6 +42,8 @@ begin
 		writeln('1. Registrasi Akun Pengunjung Baru');
 		writeln('2. Pencarian Buku Berdasarkan Kategori');
 		writeln('3. Pencarian Buku Berdasarkan Tahun Penerbitan');
+		writeln('4. Penambahan Buku Baru');
+		writeln('5. Penambahan Jumlah Buku');
 		write('Masukkan pilihan: ');
 		readln(input);
 
@@ -52,6 +56,12 @@ begin
 		end else if (input = 3) then
 		begin
 			searchYr(koleksi, Neff_2);
+		end else if (input = 4) then
+		begin
+			addBook(koleksi, Neff_2);
+		end else if (input = 5) then
+		begin
+			addNumBook(koleksi, Neff_2);
 		end;
 	end;
 end .

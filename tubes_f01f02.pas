@@ -1,5 +1,6 @@
 unit tubes_f01f02; //unit menyimpan fungsi login dan registrasi, (f01 dan f02)
 interface
+	uses blowfish; //unit algoritma enkripsi blowfish
 	type
 	pengguna = record
 			nama  : string; // nama user
@@ -16,7 +17,8 @@ interface
 	procedure Register(var dataUsr : tabUsr; var Neff : integer);
 	//prosedur menjalankan registrasi yang akan dijalankan jika isAdmin pada prosedur login bernilai true
 
-implementation
+implementation                                                  
+
 	procedure Login(var dataUsr : tabUsr; var Neff : integer; var isAdmin: boolean);
 	var
 		cek : boolean; //untuk validasi masukan username
@@ -52,7 +54,7 @@ implementation
 			if(ada) then
 			begin
 				writeln();
-				writeln('Selamat datang ', user.nama);
+				writeln('Selamat datang ', dataUsr[i].nama);
 				writeln();			
 				cek := false; // keluar dari loop
 			end else
