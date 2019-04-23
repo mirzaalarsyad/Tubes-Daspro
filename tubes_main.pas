@@ -1,7 +1,6 @@
 program tubes_main;
 
-uses tubes_f01f02, tubes_f03f04, tubes_f09f10,
-	 blowfish;
+uses tubes_f01f02, tubes_f03f04, tubes_f09f10;
 
 {type
 	pengguna = record
@@ -27,39 +26,39 @@ var
 	koleksi	: tubes_f03f04.tabBook;
 	Neff_1 	: integer; //Jumlah pengguna yang tersimpan dalam array data (nilai efektif)
 	Neff_2	: integer; //jumlah buku tersedia
-	input   : integer;
+	input   : string;
 	isAdmin : boolean;
+	fileUsr : string;
 
 begin
-
 	Neff_1 := 0;
 	Neff_2 := 0;
 	isAdmin := false;
+	fileUsr := 'user.csv';
+
+	InitTabUsr(dataUsr, Neff_1, fileUsr);
+	writeln('$ login');
+	writeln();
 	Login(dataUsr, Neff_1, isAdmin);
 	if (isAdmin) then
 	begin
-		writeln('Menu Layanan Perpustakaan Ba Sing Tse');
-		writeln('1. Registrasi Akun Pengunjung Baru');
-		writeln('2. Pencarian Buku Berdasarkan Kategori');
-		writeln('3. Pencarian Buku Berdasarkan Tahun Penerbitan');
-		writeln('4. Penambahan Buku Baru');
-		writeln('5. Penambahan Jumlah Buku');
-		write('Masukkan pilihan: ');
+		writeln('Selamat datang di Perpustakaan Ba Sing Tse');
+		write('$ ');
 		readln(input);
 
-		if (input = 1) then
+		if (input = 'register') then
 		begin
 			Register(dataUsr, Neff_1);
-		end else if (input = 2) then
+		end else if (input = 'cari') then
 		begin
 			searchCat(koleksi, Neff_2);
-		end else if (input = 3) then
+		end else if (input = 'caritahunterbit') then
 		begin
 			searchYr(koleksi, Neff_2);
-		end else if (input = 4) then
+		end else if (input = 'tambah_buku') then
 		begin
 			addBook(koleksi, Neff_2);
-		end else if (input = 5) then
+		end else if (input = 'tambah_jumlah_buku') then
 		begin
 			addNumBook(koleksi, Neff_2);
 		end;
