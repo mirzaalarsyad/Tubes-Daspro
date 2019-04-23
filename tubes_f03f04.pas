@@ -1,23 +1,13 @@
 unit tubes_f03f04; //unit menyimpan fungsi dan prosedur untuk pencarian buku (f03 dan f04)
 interface
-	type
-		buku = record
-				id	 : integer; // ID Buku
-				judul: string;  // Judul Buku
-				auth : string;  // penulis (author) buku
-				ktg	 : string;  // Kategoti buku
-				thn  : integer; // Tahun terbit
-				jml  : integer; // Jumlah buku
-				end;
-		tabBook = array [1..10000] of buku;
-	
-	procedure searchCat (var koleksi : tabBook; var Neff : integer);
+	uses tubes_datatypes;
+	procedure searchCat (var koleksi : tabBuku);
 	// Prosedur pencarian berdasarkan kategori buku
-	procedure searchYr (var koleksi : tabBook; var Neff : integer);
+	procedure searchYr (var koleksi : tabBuku);
 	// Prosedur pencarian berdasarkan tahun penerbitan buku
 
 implementation
-	procedure searchCat (var koleksi : tabBook; var Neff : integer);
+	procedure searchCat (var koleksi : tabBuku);
 	var
 		i   : integer;
 		ada : boolean; //ada atau tidaknya kategori yang tersedia
@@ -30,12 +20,12 @@ implementation
 			readln(katg);
 			if (katg = 'sastra') or (katg = 'sains') or (katg = 'manga') or (katg = 'sejarah') or (katg = 'programming') then
 			begin
-				for i := 1 to Neff do
+				for i := 1 to koleksi.neff do
 				begin
 					writeln();
-					if(koleksi[i].ktg = katg) then
+					if(koleksi.tab[i].Kategori = katg) then
 					begin
-						writeln(koleksi[i].id, ' | ', koleksi[i].judul, ' | ', koleksi[i].auth);
+						writeln(koleksi.tab[i].ID_Buku, ' | ', koleksi.tab[i].Judul_Buku, ' | ', koleksi.tab[i].Author);
 						ada := true;
 					end;
 				end;
@@ -52,7 +42,7 @@ implementation
 		until (katg = 'sastra') or (katg = 'sains') or (katg = 'manga') or (katg = 'sejarah') or (katg = 'programming');
 	end;
 
-	procedure searchYr (var koleksi : tabBook; var Neff : integer);
+	procedure searchYr (var koleksi : tabBuku);
 	var
 		i   : integer;
 		ada : boolean;
@@ -66,51 +56,51 @@ implementation
 		readln(op);
 		if(op = '>') then
 		begin
-			for i := 1 to Neff do
+			for i := 1 to koleksi.neff do
 			begin
-				if(koleksi[i].thn > yr) then
+				if(koleksi.tab[i].Tahun_Penerbit > yr) then
 				begin
-					writeln(koleksi[i].id, ' | ', koleksi[i].judul, ' | ', koleksi[i].auth);
+					writeln(koleksi.tab[i].ID_Buku, ' | ', koleksi.tab[i].Judul_Buku, ' | ', koleksi.tab[i].Author);
 					ada := true;
 				end;
 			end;
 		end else if (op = '<') then
 		begin
-			for i := 1 to Neff do
+			for i := 1 to koleksi.neff do
 			begin
-				if(koleksi[i].thn < yr) then
+				if(koleksi.tab[i].Tahun_Penerbit < yr) then
 				begin
-					writeln(koleksi[i].id, ' | ', koleksi[i].judul, ' | ', koleksi[i].auth);
+					writeln(koleksi.tab[i].ID_Buku, ' | ', koleksi.tab[i].Judul_Buku, ' | ', koleksi.tab[i].Author);
 					ada := true;
 				end;
 			end;
 		end else if (op = '=') then
 		begin
-			for i := 1 to Neff do
+			for i := 1 to koleksi.neff do
 			begin
-				if(koleksi[i].thn = yr) then
+				if(koleksi.tab[i].Tahun_Penerbit = yr) then
 				begin
-					writeln(koleksi[i].id, ' | ', koleksi[i].judul, ' | ', koleksi[i].auth);
+					writeln(koleksi.tab[i].ID_Buku, ' | ', koleksi.tab[i].Judul_Buku, ' | ', koleksi.tab[i].Author);
 					ada := true;
 				end;
 			end;
 		end else if (op = '<=') then
 		begin
-			for i := 1 to Neff do
+			for i := 1 to koleksi.neff do
 			begin
-				if(koleksi[i].thn <= yr) then
+				if(koleksi.tab[i].Tahun_Penerbit <= yr) then
 				begin
-					writeln(koleksi[i].id, ' | ', koleksi[i].judul, ' | ', koleksi[i].auth);
+					writeln(koleksi.tab[i].ID_Buku, ' | ', koleksi.tab[i].Judul_Buku, ' | ', koleksi.tab[i].Author);
 					ada := true;
 				end;
 			end;
 		end else
 		begin
-			for i := 1 to Neff do
+			for i := 1 to koleksi.neff do
 			begin
-				if(koleksi[i].thn >= yr) then
+				if(koleksi.tab[i].Tahun_Penerbit >= yr) then
 				begin
-					writeln(koleksi[i].id, ' | ', koleksi[i].judul, ' | ', koleksi[i].auth);
+					writeln(koleksi.tab[i].ID_Buku, ' | ', koleksi.tab[i].Judul_Buku, ' | ', koleksi.tab[i].Author);
 					ada := true;
 				end;
 			end;

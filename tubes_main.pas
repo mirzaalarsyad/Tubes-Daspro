@@ -1,6 +1,6 @@
 program tubes_main;
 
-uses tubes_f01f02, tubes_f03f04, tubes_f09f10;
+uses tubes_f01f02, tubes_f03f04, tubes_f09f10, tubes_f11, tubes_f12, tubes_f1314, tubes_f15, tubes_datatypes;
 
 {type
 	pengguna = record
@@ -22,45 +22,67 @@ uses tubes_f01f02, tubes_f03f04, tubes_f09f10;
 	tabBook = array [1..10000] of buku; }
 
 var
-	dataUsr : tubes_f01f02.tabUsr;
-	koleksi	: tubes_f03f04.tabBook;
-	Neff_1 	: integer; //Jumlah pengguna yang tersimpan dalam array data (nilai efektif)
-	Neff_2	: integer; //jumlah buku tersedia
-	input   : string;
-	isAdmin : boolean;
-	fileUsr : string;
+	dataUsr 				: tubes_f01f02.tabUsr;
+	tBuku      		       	: tabBuku; 
+	tUser  		 		  	: tabUser;
+	tHistoryPeminjaman 	    : tabHistoryPeminjaman;
+	Neff_1 					: integer; //Jumlah pengguna yang tersimpan dalam array data (nilai efektif)
+	Neff_2					: integer; //jumlah buku tersedia
+	input   				: string;
+	isAdmin 				: boolean;
+	fileUsr 				: string;
+	tHistoryPengembalian	: tabHistoryPengembalian;
+	tlaporanBukuHilang		: tablaporanBukuHilang;
 
 begin
 	Neff_1 := 0;
-	Neff_2 := 0;
 	isAdmin := false;
 	fileUsr := 'user.csv';
-
+	input := '';
 	InitTabUsr(dataUsr, Neff_1, fileUsr);
 	writeln('$ login');
 	writeln();
 	Login(dataUsr, Neff_1, isAdmin);
-	if (isAdmin) then
+	writeln('Selamat datang di Perpustakaan Ba Sing Tse');
+	while (input <> 'exit') do
 	begin
-		writeln('Selamat datang di Perpustakaan Ba Sing Tse');
 		write('$ ');
 		readln(input);
+		if (isAdmin) then
+		begin
+			if (input = 'register') then
+			begin
+				Register(dataUsr, Neff_1);
+			end;
+		end;
 
-		if (input = 'register') then
+		if (input = 'cari') then
 		begin
-			Register(dataUsr, Neff_1);
-		end else if (input = 'cari') then
-		begin
-			searchCat(koleksi, Neff_2);
+			searchCat(tBuku);
 		end else if (input = 'caritahunterbit') then
 		begin
-			searchYr(koleksi, Neff_2);
+			searchYr(tBuku);
 		end else if (input = 'tambah_buku') then
 		begin
-			addBook(koleksi, Neff_2);
+			addBook(tBuku);
 		end else if (input = 'tambah_jumlah_buku') then
 		begin
-			addNumBook(koleksi, Neff_2);
+			addNumBook(tBuku);
+		end else if (input = 'riwayat') then
+		begin
+			RiwayatPeminjaman(tBuku, tUser, tHistoryPeminjaman);
+		end else if (input = 'statistik') then
+		begin
+			Statistik(tUser, tBuku);
+		end else if (input = 'load') then 
+		begin
+			Loadcsv(tBuku, dataUsr, tHistoryPeminjaman, tHistoryPengembalian, tlaporanBukuHilang, Neff_1);
+		end else if (input = 'save') then
+		begin
+			Writecsv(tBuku, dataUsr, tHistoryPeminjaman, tHistoryPengembalian, tlaporanBukuHilang, Neff_1);
+		end else if (input = 'cari_anggota') then
+		begin
+			CariAnggota(tUser);
 		end;
 	end;
 end .

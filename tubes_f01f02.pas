@@ -16,6 +16,8 @@ interface
 	
 	procedure InitTabUsr(var dataUsr : tabUsr; var Neff : integer; var fileName : string);
 	//inisiasi array
+	function Encrypt(var pw: string): string;
+	//Enkripsi password
 	procedure Login(var dataUsr : tabUsr; var Neff : integer; var isAdmin: boolean);
 	//prosedur menjalankan login dan kemudian memeriksa role pengguna
 	procedure Register(var dataUsr : tabUsr; var Neff : integer);
@@ -33,8 +35,8 @@ implementation
 		reset(f);
 		Neff := sizeData(fileName) - 1;
 
-		j:= 1;
-		for i:= 2 to sizeData(fileName) do
+		j:= 0;
+		for i:= 1 to sizeData(fileName) do
 		begin
 			//data pada baris ke-i
 			while j <> i do
@@ -68,6 +70,20 @@ implementation
 		close(f);
 	end;
 
+	function Encrypt(var pw: string) : string; 
+	var
+		encryptedPw: string;
+		i, j: integer;
+	begin
+		j:= 1;
+		for i:= 1 to length(pw) do
+		begin
+			j:= j*j + ord(pw[i]);
+		end;
+		str(j, encryptedPw);
+		Encrypt:= encryptedPw;
+	end;
+
 	procedure Login(var dataUsr : tabUsr; var Neff : integer; var isAdmin: boolean);
 	var
 		cek : boolean; //untuk validasi masukan username
@@ -89,7 +105,7 @@ implementation
 
 			while not (ada) and (i <= Neff) do // validasi input
 			begin
-				if(user.usrNm = dataUsr[i].usrNm) and (user.pw = dataUsr[i].pw) then
+				if(user.usrNm = dataUsr[i].usrNm) and (Encrypt(user.pw) = dataUsr[i].pw) then
 				begin
 					if(dataUsr[i].role = 'Admin') then
 					begin
@@ -127,6 +143,7 @@ implementation
 		readln(user.usrNm);
 		write('Masukkan password pengunjung: ');
 		readln(user.pw);
+		user.pw := Encrypt(user.pw);
 		user.role := 'Visitor';
 		dataUsr[Neff+1] := user; // data pertama setelah nilai efektif atau jumlah pengguna
 		Neff:=Neff+1;
