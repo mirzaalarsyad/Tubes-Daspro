@@ -1,25 +1,7 @@
 program tubes_main;
 
-uses tubes_f01f02, tubes_f03f04, tubes_f09f10, tubes_f11, tubes_f12, tubes_f1314, tubes_f15, tubes_datatypes;
-
-{type
-	pengguna = record
-			nama  : string; // nama user
-			addr  : string; // alamat user
-			usrNm : string; // username
-			pw	  : string; // password
-			role  : string; // role, admin atau pengunjung
-			end;
-	buku = record
-			id	 : integer; // ID Buku
-			judul: string;  // Judul Buku
-			auth : string;  // penulis (author) buku
-			ktg	 : string;  // Kategoti buku
-			thn  : integer; // Tahun terbit
-			jml  : integer; // Jumlah buku
-			end;
-	tabUsr = array [1..10000] of pengguna;
-	tabBook = array [1..10000] of buku; }
+uses tubes_f01f02, tubes_f03f04, tubes_f09f10, tubes_f11, tubes_f12, tubes_f1314, tubes_f15, tubes_datatypes,
+	 tubes_f07f08, tubes_f05;
 
 var
 	dataUsr 				: tubes_f01f02.tabUsr;
@@ -27,23 +9,46 @@ var
 	tUser  		 		  	: tabUser;
 	tHistoryPeminjaman 	    : tabHistoryPeminjaman;
 	Neff_1 					: integer; //Jumlah pengguna yang tersimpan dalam array data (nilai efektif)
-	Neff_2					: integer; //jumlah buku tersedia
 	input   				: string;
 	isAdmin 				: boolean;
 	fileUsr 				: string;
 	tHistoryPengembalian	: tabHistoryPengembalian;
 	tlaporanBukuHilang		: tablaporanBukuHilang;
-
+	i 					    : integer;
+	id 						: string;
+	x						: string; // pilihan sebelum exit
+	sudahLogin              : boolean;
+	sudahLoad				: boolean;
 begin
 	Neff_1 := 0;
 	isAdmin := false;
-	fileUsr := 'user.csv';
-	input := '';
-	InitTabUsr(dataUsr, Neff_1, fileUsr);
-	writeln('$ login');
-	writeln();
-	Login(dataUsr, Neff_1, isAdmin);
-	writeln('Selamat datang di Perpustakaan Ba Sing Tse');
+	sudahLogin := false;
+	sudahLoad  := false;
+	while not(sudahLoad) and not(sudahLogin) do 
+	begin
+		write('$ ');
+		readln(input);
+		if(input = 'load') then
+		begin
+			Loadcsv(tBuku, dataUsr, tHistoryPeminjaman, tHistoryPengembalian, tlaporanBukuHilang, Neff_1);
+			sudahLoad := true;
+		end;
+
+		if(sudahLoad) then
+		begin
+			Login(dataUsr,Neff_1, isAdmin, i);
+			sudahLogin := true;
+		end else 
+		begin
+			writeln('belum ada data di load, silakan load terlebih dahulu');
+		end;
+
+		if not (sudahLogin) then
+		begin
+			writeln('jika data sudah di load, silakan login');
+		end;
+	end;
+
 	while (input <> 'exit') do
 	begin
 		write('$ ');
@@ -53,6 +58,9 @@ begin
 			if (input = 'register') then
 			begin
 				Register(dataUsr, Neff_1);
+			end else if (input = 'lihat_laporan') then
+			begin
+				lihatLaporan(tlaporanBukuHilang, tBuku);
 			end;
 		end;
 
@@ -73,7 +81,7 @@ begin
 			RiwayatPeminjaman(tBuku, tUser, tHistoryPeminjaman);
 		end else if (input = 'statistik') then
 		begin
-			Statistik(tUser, tBuku);
+			Statistik(dataUsr, tBuku, Neff_1);
 		end else if (input = 'load') then 
 		begin
 			Loadcsv(tBuku, dataUsr, tHistoryPeminjaman, tHistoryPengembalian, tlaporanBukuHilang, Neff_1);
@@ -82,7 +90,23 @@ begin
 			Writecsv(tBuku, dataUsr, tHistoryPeminjaman, tHistoryPengembalian, tlaporanBukuHilang, Neff_1);
 		end else if (input = 'cari_anggota') then
 		begin
-			CariAnggota(tUser);
+			CariAnggota(dataUsr, Neff_1);
+		end else if (input = 'pinjam_buku') then
+		begin
+		    Peminjaman(tBuku, dataUsr, tHistoryPeminjaman);
+		end else if (input = 'kembalikan_buku') then
+		begin
+		//	Pengembalian(dataUsr[i].usrNm; id);
+		end else if (input = 'lapor_hilang') then
+		begin
+			laporHilang(dataUsr[i].usrNm, tlaporanBukuHilang);
 		end;
+
 	end;
-end .
+	write('Apakah anda mau menyimpan? (y/n) ');
+	readln(x);
+	if(x = 'y') then
+	begin
+		Writecsv(tBuku, dataUsr, tHistoryPeminjaman, tHistoryPengembalian, tlaporanBukuHilang, Neff_1);
+	end;
+end.

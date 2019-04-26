@@ -1,9 +1,9 @@
 unit tubes_f12;
 interface
-uses tubes_datatypes;
-procedure Statistik(var tUser: tabUser; var tBuku:tabBuku);
+uses tubes_datatypes, tubes_f01f02;
+procedure Statistik(var tUser: tabUsr; var tBuku:tabBuku; var N: integer);
 implementation
-procedure Statistik(var tUser: tabUser; var tBuku:tabBuku);
+procedure Statistik(var tUser: tabUsr; var tBuku:tabBuku; var N: integer);
 var
 	i 					: Integer; //index
 	adminCount			: Integer; // banyak admin,pengunjung, dan kategori buku	
@@ -17,10 +17,10 @@ var
 begin
 	adminCount:=0; pengunjungCount:=0; //permulaan awal jumlah =0;
 	mangaCount:=0; sejarahCount:=0; programmingCount:=0; sainsCount:=0; sastraCount:=0; //permulaan awal jumlah =0;
-	for i:=1 to tUser.neff Do //perulangan menghitung user
+	for i:=1 to N Do //perulangan menghitung user
 	begin
-		case tUser.tab[i].Role of 	'Admin' : adminCount:=adminCount+1; //jika admin, maka nilai admin count akan bertambah, begitupulan dengan pengunjung dan kategori buku
-								'Pengunjung' : pengunjungCount:=pengunjungCount+1;
+		case tUser[i].role of 	'"Admin"' : adminCount:=adminCount+1; //jika admin, maka nilai admin count akan bertambah, begitupulan dengan pengunjung dan kategori buku
+								'"Pengunjung"' : pengunjungCount:=pengunjungCount+1;
 								end;
 	end;
 	for i := 1 to tBuku.neff do

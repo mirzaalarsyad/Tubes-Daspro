@@ -18,7 +18,7 @@ interface
 	//inisiasi array
 	function Encrypt(var pw: string): string;
 	//Enkripsi password
-	procedure Login(var dataUsr : tabUsr; var Neff : integer; var isAdmin: boolean);
+	procedure Login(var dataUsr : tabUsr; var Neff : integer; var isAdmin: boolean; var i: integer);
 	//prosedur menjalankan login dan kemudian memeriksa role pengguna
 	procedure Register(var dataUsr : tabUsr; var Neff : integer);
 	//prosedur menjalankan registrasi yang akan dijalankan jika isAdmin pada prosedur login bernilai true
@@ -33,7 +33,7 @@ implementation
 	begin
 		assign(f, fileName);
 		reset(f);
-		Neff := sizeData(fileName) - 1;
+		Neff := sizeData(fileName);
 
 		j:= 0;
 		for i:= 1 to sizeData(fileName) do
@@ -58,11 +58,11 @@ implementation
 				end;
 
 				case l of
-					1 : dataUsr[i-1].nama   := s;
-					2 : dataUsr[i-1].addr	:= s;
-					3 : dataUsr[i-1].usrNm  := s;
-					4 : dataUsr[i-1].pw     := s;
-					5 : dataUsr[i-1].role   := s;
+					1 : dataUsr[i].nama   := s;
+					2 : dataUsr[i].addr	  := s;
+					3 : dataUsr[i].usrNm  := s;
+					4 : dataUsr[i].pw     := s;
+					5 : dataUsr[i].role   := s;
 				end;
 				k:= k+1;
 			end;
@@ -84,12 +84,13 @@ implementation
 		Encrypt:= encryptedPw;
 	end;
 
-	procedure Login(var dataUsr : tabUsr; var Neff : integer; var isAdmin: boolean);
+	procedure Login(var dataUsr : tabUsr; var Neff : integer; var isAdmin: boolean; var i: integer);
 	var
 		cek : boolean; //untuk validasi masukan username
-		user: pengguna;
-		i   : integer;
+		pas : string;
+		usr : string;
 		ada : boolean; //jika username/pass benar, ada bernilai true
+		enc : string;
 	begin	
 		cek := true; //jika cek false, input sudah benar
 		while (cek) do
@@ -97,25 +98,31 @@ implementation
 			isAdmin := false;
 			writeln('Login ke Akun Perpustakaan Ba Sing Tse');
 			write('Masukkan username: '); // Login
-			readln(user.usrNm);
+			readln(usr);
+			usr := '"' + usr + '"';
 			write('Masukkan password: ');
-			readln(user.pw);
+			readln(pas);
+			enc := Encrypt(pas);
+			writeln(enc);
 			i := 1;
 			ada := false;
-
-			while not (ada) and (i <= Neff) do // validasi input
+			
+			while not (ada) and (i <= Neff) do
 			begin
-				if(user.usrNm = dataUsr[i].usrNm) and (Encrypt(user.pw) = dataUsr[i].pw) then
+				if(dataUsr[i].usrNm = usr) then
 				begin
-					if(dataUsr[i].role = 'Admin') then
+					if(dataUsr[i].pw = enc) then
 					begin
-						isAdmin := true;
+						if(dataUsr[i].role = '"Admin"') then
+						begin
+							isAdmin := true;
+						end;
+						ada := true;
 					end;
-					ada := true; //keluar dari while
 				end;
 				i := i+1;
 			end;
-
+					
 			if(ada) then
 			begin
 				writeln();

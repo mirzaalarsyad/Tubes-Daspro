@@ -3,6 +3,8 @@ interface
 procedure ExtractStrings(var Str: string; var limiter :char; var ArrString : array of String);
 Function IntToStr (I : Integer) : String;
 function StrToInt(var s: string): Integer;
+function CharToInt(var cIn : char) : Integer;
+
 implementation
 procedure ExtractStrings(var Str: string; var limiter :char; var ArrString : array of String);
 	var
@@ -45,7 +47,23 @@ function StrToInt(var s: string): Integer; //mengubah string menjadi integer;
  	Val (S,I);
  	StrToInt:=I;
 	end;
-	
+function CharToInt(var cIn : char) : Integer;
+	var cOut: integer;
+	begin
+	case cIn of
+	'1' : cOut := 1;
+	'2' : cOut := 2;
+	'3' : cOut := 3;
+	'4' : cOut := 4;
+	'5' : cOut := 5;
+	'6' : cOut := 6;
+	'7' : cOut := 7;
+	'8' : cOut := 8;
+	'9' : cOut := 9;
+	'0' : cOut := 0;
+	end;
+	CharToInt := cOut;
+	end;
 end.
 
 
